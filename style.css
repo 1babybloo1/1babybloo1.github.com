@@ -1,0 +1,253 @@
+/* --- CSS Variables (Your Color Palette & Style Properties) --- */
+:root {
+    /* --- MODIFIED: Higher Contrast Palette --- */
+    --dark-grey: #1F1F1F; /* Darker, almost black for a stronger base */
+    --medium-grey: #4A4A4A; /* Adjusted for better separation */
+    --light-grey: #F5F5F5; /* Brighter, cleaner white for text */
+    --baby-blue: #90BDE7; /* Slightly more saturated and brighter blue */
+    --accent-blue-hover: #B4D4F5; /* Adjusted hover state */
+
+    /* Dynamic Properties */
+    --transition-speed-fast: 0.3s;
+    --transition-speed-slow: 0.6s;
+    --transition-curve: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --border-radius: 12px;
+}
+
+/* --- Basic Reset & Setup --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--dark-grey);
+    color: var(--light-grey);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Dynamic Typography --- */
+h1, h2, h3, .logo a {
+    font-family: 'Arial Black', sans-serif;
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    /* --- ADDED: Subtle shadow for pop --- */
+    text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+h1 { font-size: clamp(2.5rem, 8vw, 5rem); letter-spacing: 1px; }
+h2 { font-size: clamp(2rem, 6vw, 2.8rem); }
+p { font-size: 1.1rem; margin-bottom: 1rem; }
+
+a {
+    color: var(--baby-blue);
+    text-decoration: none;
+    transition: color var(--transition-speed-fast) ease;
+}
+a:hover {
+    color: var(--accent-blue-hover);
+}
+
+/* --- Header & Navigation --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 5%;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    color: #fff;
+    transition: transform var(--transition-speed-fast) ease;
+}
+.logo a:hover {
+    transform: scale(1.05);
+}
+
+.main-nav ul { list-style: none; display: flex; }
+.main-nav li { margin-left: 2.5rem; }
+.main-nav a {
+    font-weight: bold; font-size: 1rem; color: var(--light-grey);
+    position: relative; padding: 5px 0; letter-spacing: 1px;
+    transition: color var(--transition-speed-fast) ease;
+}
+.main-nav a::after {
+    content: ''; position: absolute; bottom: 0; left: 50%;
+    transform: translateX(-50%); width: 0; height: 2px;
+    background-color: var(--baby-blue);
+    transition: width var(--transition-speed-fast) var(--transition-curve);
+}
+.main-nav a:hover::after { width: 100%; }
+
+
+/* --- HERO SECTION WITH BACKGROUND IMAGE --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 5%;
+    
+    background:
+        /* --- MODIFIED: Stronger overlay for higher contrast --- */
+        linear-gradient(rgba(31, 31, 31, 0.85), rgba(31, 31, 31, 0.95)),
+        url('https://res.cloudinary.com/djttn4xvk/image/upload/v1749548022/5a2057167504713.68472125af52e_thwhnh.png') center center/cover no-repeat;
+    
+    background-attachment: fixed;
+}
+
+.hero-content .subtitle {
+    font-size: 1.2rem;
+    color: var(--light-grey);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* --- DYNAMIC Portfolio Grid Section --- */
+.portfolio-section {
+    padding: 6rem 5%;
+    text-align: center;
+    background-color: var(--dark-grey);
+    position: relative;
+    z-index: 2;
+}
+.section-title {
+    margin-bottom: 4rem;
+}
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+}
+.portfolio-item {
+    position: relative; overflow: hidden; border-radius: var(--border-radius);
+    display: block; box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    transition: transform var(--transition-speed-slow) var(--transition-curve),
+                box-shadow var(--transition-speed-slow) var(--transition-curve);
+}
+.portfolio-item:hover {
+    transform: translateY(-10px); box-shadow: 0 25px 40px rgba(0,0,0,0.4);
+}
+.portfolio-item img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform var(--transition-speed-slow) var(--transition-curve),
+                filter var(--transition-speed-slow) var(--transition-curve);
+}
+.portfolio-item:hover img {
+    transform: scale(1.1); filter: brightness(0.5) saturate(0);
+}
+.portfolio-item .overlay {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 2.5rem; text-align: left;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    transform: translateY(100%); opacity: 0;
+    transition: transform var(--transition-speed-slow) var(--transition-curve),
+                opacity var(--transition-speed-slow) var(--transition-curve);
+}
+.portfolio-item:hover .overlay { transform: translateY(0); opacity: 1; }
+.overlay h3 {
+    color: #fff; font-size: 2rem; transform: translateY(20px);
+    transition: transform var(--transition-speed-slow) var(--transition-curve) 0.2s;
+}
+.portfolio-item:hover .overlay h3 { transform: translateY(0); }
+.overlay p {
+    font-size: 1rem; margin-bottom: 0; color: var(--baby-blue); font-weight: bold;
+    transform: translateY(20px);
+    transition: transform var(--transition-speed-slow) var(--transition-curve) 0.3s;
+}
+.portfolio-item:hover .overlay p { transform: translateY(0); }
+
+
+/* --- ABOUT SECTION WITH BACKGROUND IMAGE --- */
+.about-section {
+    padding: 6rem 5%;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+
+    background:
+        /* --- MODIFIED: Stronger overlay for higher contrast --- */
+        linear-gradient(rgba(31, 31, 31, 0.95), rgba(31, 31, 31, 0.98)),
+        url('https://res.cloudinary.com/djttn4xvk/image/upload/v1749548160/4bf84d214426167.6759ae5aac00d_xpntpy.png') center center/cover no-repeat;
+}
+.about-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* --- Footer --- */
+.main-footer {
+    text-align: center;
+    padding: 4rem 5% 3rem;
+    position: relative;
+    z-index: 2;
+    background-color: var(--dark-grey);
+}
+.main-footer .email-link {
+    font-family: 'Arial', sans-serif; font-size: 1.5rem; font-weight: bold;
+    display: inline-block; margin: 0.5rem 0 2rem 0; letter-spacing: 1px;
+    transition: transform var(--transition-speed-fast) ease,
+                letter-spacing var(--transition-speed-fast) ease,
+                color var(--transition-speed-fast) ease;
+}
+.main-footer .email-link:hover {
+    transform: scale(1.03); letter-spacing: 2px; color: var(--accent-blue-hover);
+}
+.copyright {
+    font-size: 0.9rem;
+    color: var(--medium-grey);
+}
+
+/* --- Project Page Specific Styles --- */
+.project-page { padding-top: 150px; }
+.project-hero { text-align: center; padding: 2rem 5%; }
+.project-subtitle { max-width: 700px; margin: 0 auto 4rem auto; color: var(--light-grey); }
+.project-gallery {
+    display: grid; grid-template-columns: 1fr;
+    gap: 2rem; padding: 0 5% 6rem 5%;
+    max-width: 1200px; margin: 0 auto;
+}
+.project-gallery img {
+    width: 100%; border-radius: var(--border-radius);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+/* --- Fade-in Animation (Works with your existing JS) --- */
+.fade-in {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s var(--transition-curve), transform 1s var(--transition-curve);
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    .main-header {
+        flex-direction: column; padding: 1.5rem 5%; position: static;
+    }
+    .logo { margin-bottom: 1.5rem; }
+    .main-nav li { margin: 0 1rem; }
+    .hero { min-height: 70vh; background-attachment: scroll; }
+    .project-page { padding-top: 2rem; }
+}
