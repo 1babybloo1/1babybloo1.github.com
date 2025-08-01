@@ -104,29 +104,13 @@ a:hover {
     justify-content: center;
     text-align: center;
     padding: 0 5%;
-    position: relative; /* Added for pseudo-element positioning */
-    overflow: hidden; /* Added to clip zooming image */
-
-    /* Only the gradient overlay remains on .hero */
-    background: linear-gradient(rgba(31, 31, 31, 0.85), rgba(31, 31, 31, 0.95));
-    /* Removed background-image and background-attachment from here */
-}
-
-/* Ken Burns effect on a pseudo-element */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('https://res.cloudinary.com/djttn4xvk/image/upload/v1749548022/5a2057167504712.68472125af52e_thwhnh.png'); /* The original image URL */
-    background-size: 110%; /* Start slightly zoomed in to allow panning */
-    background-position: center center; /* Start position */
-    background-repeat: no-repeat;
-    background-attachment: fixed; /* Retain fixed attachment for desktop */
-    z-index: -1; /* Place behind the content and gradient */
-    animation: kenburns-effect 25s infinite alternate ease-in-out; /* Apply Ken Burns animation */
+    
+    background:
+        /* --- MODIFIED: Stronger overlay for higher contrast --- */
+        linear-gradient(rgba(31, 31, 31, 0.85), rgba(31, 31, 31, 0.95)),
+        url('https://res.cloudinary.com/djttn4xvk/image/upload/v1749548022/5a2057167504713.68472125af52e_thwhnh.png') center center/cover no-repeat;
+    
+    background-attachment: fixed;
 }
 
 .hero-content .subtitle {
@@ -257,18 +241,6 @@ a:hover {
     transform: translateY(0);
 }
 
-/* --- Ken Burns Keyframes --- */
-@keyframes kenburns-effect {
-    0% {
-        background-size: 110%; /* Start slightly zoomed in */
-        background-position: 50% 50%; /* Start at center */
-    }
-    100% {
-        background-size: 120%; /* Zoom in more */
-        background-position: 55% 45%; /* Pan slightly to top-right */
-    }
-}
-
 /* --- Responsive Design --- */
 @media (max-width: 768px) {
     .main-header {
@@ -276,13 +248,6 @@ a:hover {
     }
     .logo { margin-bottom: 1.5rem; }
     .main-nav li { margin: 0 1rem; }
-    .hero { min-height: 70vh; }
-    /* Apply background-attachment: scroll to the pseudo-element on mobile */
-    .hero::before {
-        background-attachment: scroll;
-        /* You can also adjust animation speed or disable it for mobile if needed */
-        /* animation: kenburns-effect 15s infinite alternate ease-in-out; */
-        /* animation: none; */
-    }
+    .hero { min-height: 70vh; background-attachment: scroll; }
     .project-page { padding-top: 2rem; }
 }
