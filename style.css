@@ -1,0 +1,157 @@
+/* --- GLOBAL STYLES & RESET --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('https://res.cloudinary.com/djttn4xvk/image/upload/v1752050468/Gaejog-WYAAaAeP_ql5wai.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    color: #fff;
+    
+    position: relative;
+    overflow: hidden;
+}
+
+/* --- DARK OVERLAY --- */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7); /* Black overlay at 50% opacity */
+    z-index: 0; /* Sits behind everything else */
+}
+
+/* --- PARTICLE CANVAS STYLING --- */
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Sits above the overlay but below the card */
+}
+
+/* --- THE GLASS CARD --- */
+.glass-card {
+    position: relative;
+    z-index: 2; /* Ensures the card is on top of the particles */
+    width: 100%;
+    max-width: 600px;
+    padding: 50px 40px;
+    
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+/* --- CARD CONTENT & ANIMATIONS (No changes here) --- */
+.pfp {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    margin-bottom: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    animation: slideInDown 0.8s ease-out 0.2s backwards;
+}
+
+.pfp:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+.name {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    animation: slideInDown 0.8s ease-out 0.4s backwards;
+}
+
+.quote {
+    font-size: 1.1rem;
+    font-weight: 300;
+    color: #e0e0e0;
+    margin-bottom: 35px;
+    max-width: 90%;
+    animation: slideInDown 0.8s ease-out 0.6s backwards;
+}
+
+.links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    animation: slideInUp 0.8s ease-out 0.8s backwards;
+}
+
+.link-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.link-button i {
+    font-size: 1.2rem;
+}
+
+.link-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* --- KEYFRAME ANIMATIONS --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideInDown {
+    from { opacity: 0; transform: translateY(-30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
