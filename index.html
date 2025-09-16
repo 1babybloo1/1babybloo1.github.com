@@ -18,17 +18,22 @@
 </head>
 <body>
 
-    <!-- This canvas is for the animated particle background -->
+    <!-- Particle background canvas -->
     <canvas id="particle-canvas"></canvas>
 
     <!-- Main Glass Card -->
     <main class="glass-card">
         
         <!-- Profile Picture -->
-        <img src="https://res.cloudinary.com/djttn4xvk/image/upload/v1747819213/ebuipkb2quqrjpxt8ypp.jpg" alt="Profile Picture" class="pfp">
+        <img src="https://res.cloudinary.com/djttn4xvk/image/upload/v1747819213/ebuipkb2quqrjpxt8ypp.jpg" alt="Profile picture of babybloo" class="pfp">
 
-        <!-- Name -->
-        <h1 class="name">babybloo</h1>
+        <!-- Name and Badges Container -->
+        <div class="name-container">
+            <h1 class="name">babybloo</h1>
+            <div class="badges">
+                <i class="fa-solid fa-screwdriver-wrench badge-icon" title="Builder"></i>
+            </div>
+        </div>
 
         <!-- Quote / Bio -->
         <p class="quote">is ts tuff gng</p>
@@ -38,7 +43,8 @@
             <a href="https://behance.net/jbgfx" target="_blank" class="link-button">
                 <i class="fa-brands fa-behance"></i> Behance
             </a>
-            <a href="#" target="_blank" class="link-button">
+            <!-- Added a "disabled" class to style the coming soon link -->
+            <a href="#" target="_blank" class="link-button disabled">
                 <i class="fa-solid fa-gamepad"></i> HEXACAM (coming soon...)
             </a>
             <a href="#" target="_blank" class="link-button">
@@ -51,7 +57,7 @@
 
     </main>
 
-    <!-- JavaScript for the tilt effect AND particles -->
+    <!-- JavaScript for dynamic effects -->
     <script src="script.js"></script>
     
 </body>
