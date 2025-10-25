@@ -23,6 +23,7 @@
 }
 
 body {
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10"><circle cx="5" cy="5" r="4" fill="white"/></svg>'), auto;
     background-image: url('https://i.imgur.com/EwoWSOg.jpeg');
     background-size: cover;
     background-position: center;
