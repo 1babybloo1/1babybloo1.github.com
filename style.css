@@ -98,8 +98,9 @@ body::before {
 }
 
 .pfp:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    animation: pulseGlow 1.5s ease-in-out infinite;
 }
 
 .name-container {
