@@ -174,9 +174,14 @@ body::before {
 }
 
 .link-button:not(.disabled):hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+    animation: pulseGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+    50% { box-shadow: 0 0 30px rgba(255, 255, 255, 0.9); }
 }
 
 .link-button.disabled {
