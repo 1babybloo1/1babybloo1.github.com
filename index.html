@@ -8,108 +8,124 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Custom Cursor -->
-    <div class="cursor"></div>
-    
-    <!-- Neon Lights Background -->
-    <div class="neon-container">
-        <div class="neon-light"></div>
-        <div class="neon-light"></div>
-        <div class="neon-light"></div>
-        <div class="neon-light"></div>
-        <div class="neon-light"></div>
-    </div>
-
-    <!-- Side Menu with Particles -->
-    <nav class="side-menu">
-        <canvas id="particleCanvas"></canvas>
-        <div class="menu-label">MENU</div>
-        <div class="menu-content">
-            <a href="#hero" class="menu-item">About Me</a>
-            <a href="#gallery" class="menu-item">Stats</a>
-            <a href="#links" class="menu-item">Links</a>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-background">
+            <div class="liquid-blob blob-1"></div>
+            <div class="liquid-blob blob-2"></div>
+            <div class="liquid-blob blob-3"></div>
         </div>
-    </nav>
-
-    <!-- Scroll Indicator -->
-    <div class="scroll-indicator">
-        <div class="scroll-text">Scroll to Explore</div>
-        <div class="scroll-arrow">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="loading-content">
+            <h1 class="loading-text">
+                <span class="typewriter"></span>
+                <span class="cursor-blink">_</span>
+            </h1>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero-section">
-        <div class="glass-background"></div>
-        <div class="hero-content">
-            <h1 class="glitch-title" data-text="Welcome to My Portfolio">Welcome to My Portfolio</h1>
-            <p class="hero-subtitle">Independent Graphic Designer</p>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Custom Cursor -->
+        <div class="cursor"></div>
+        
+        <!-- Neon Lights Background -->
+        <div class="neon-container">
+            <div class="neon-light"></div>
+            <div class="neon-light"></div>
+            <div class="neon-light"></div>
+            <div class="neon-light"></div>
+            <div class="neon-light"></div>
         </div>
-    </section>
 
-    <!-- About Me Section -->
-    <section id="about" class="content-section">
-        <div class="section-content fade-in">
-            <h2>About Me</h2>
-            <p>For many years now I have grown to love graphic design. I started off using 3D software (mainly Blender 3D) to create rendered graphics. I have practiced and honed the skill through the assistance of YouTube, professional advice and the internet, taking inspiration from other artists on websites such as Behance and Artstation. </p>
-            <p>I now have also touched upon different mediums, such as 2D graphics and illustration, brutalism and photography. I have taken upon experimenting with new styles, methods and principles of graphic design. I mostly enjoy creating brutalism posters. i love the grungy textures, bold shapes and the distinctive style and principles used to make the images. 
-</p>
-<p>My journey consists of six years of experimentation, practice and cups of decaffe coffee to get to where i am now, and have enjoyed every moment, and hope to do so for a long time.</p>
+        <!-- Side Menu with Particles -->
+        <nav class="side-menu">
+            <canvas id="particleCanvas"></canvas>
+            <div class="menu-label">MENU</div>
+            <div class="menu-content">
+                <a href="#hero" class="menu-item">About Me</a>
+                <a href="#gallery" class="menu-item">Stats</a>
+                <a href="#links" class="menu-item">Links</a>
+            </div>
+        </nav>
+
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+            <div class="scroll-text">Scroll to Explore</div>
+            <div class="scroll-arrow">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
-    </section>
 
-    <!-- Stats Counter Section -->
-    <section id="gallery" class="content-section">
-        <div class="section-content fade-in">
-            <h2>Achievements</h2>
-            <div class="stats-grid">
-                <div class="stat-item bounce-in">
-                    <div class="stat-card">
-                        <div class="stat-number" data-target="23">0</div>
-                        <div class="stat-label">Projects Made</div>
+        <!-- Hero Section -->
+        <section id="hero" class="hero-section">
+            <div class="glass-background"></div>
+            <div class="hero-content">
+                <h1 class="glitch-title" data-text="Welcome to My Portfolio">Welcome to My Portfolio</h1>
+                <p class="hero-subtitle">Independent Graphic Designer</p>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="content-section">
+            <div class="section-content fade-in">
+                <h2>About Me</h2>
+                <p>For many years now I have grown to love graphic design. I started off using 3D software (mainly Blender 3D) to create rendered graphics. I have practiced and honed the skill through the assistance of YouTube, professional advice and the internet, taking inspiration from other artists on websites such as Behance and Artstation.</p>
+                <p>I now have also touched upon different mediums, such as 2D graphics and illustration, brutalism and photography. I have taken upon experimenting with new styles, methods and principles of graphic design. I mostly enjoy creating brutalism posters. i love the grungy textures, bold shapes and the distinctive style and principles used to make the images.</p>
+                <p>My journey consists of six years of experimentation, practice and cups of decaffe coffee to get to where i am now, and have enjoyed every moment, and hope to do so for a long time.</p>
+            </div>
+        </section>
+
+        <!-- Stats Counter Section -->
+        <section id="gallery" class="content-section">
+            <div class="section-content fade-in">
+                <h2>Achievements</h2>
+                <div class="stats-grid">
+                    <div class="stat-item bounce-in">
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="23">0</div>
+                            <div class="stat-label">Projects Made</div>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-item bounce-in">
-                    <div class="stat-card">
-
-                        <div class="stat-number" data-target="6">0</div>
-                        <div class="stat-label">Years Experience</div>
+                    <div class="stat-item bounce-in">
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="6">0</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-item bounce-in">
-                    <div class="stat-card">
-
-                        <div class="stat-number" data-target="2222">0</div>
-                        <div class="stat-label">Project Views</div>
+                    <div class="stat-item bounce-in">
+                        <div class="stat-card">
+                            <div class="stat-number" data-target="2222">0</div>
+                            <div class="stat-label">Project Views</div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Links Section -->
-    <section id="links" class="content-section">
-        <div class="section-content fade-in">
-            <h2>Links</h2>
-            <div class="links-container">
-                <a href="https://github.com/1babybloo1" class="link-card bounce-in">
-                    <h3>GitHub</h3>
-                    <p>Check out my code repositories</p>
-                </a>
-                <a href="https://behance.net/jbgfx" class="link-card bounce-in">
-                    <h3>Behance</h3>
-                    <p>Explore my portfolio</p>
-                </a>
-                <a href="mailto:trixdesignsofficial@gmail.com" class="link-card bounce-in">
-                    <h3>Email</h3>
-                    <p>Contact for enquiries</p>
-                </a>
+        <!-- Links Section -->
+        <section id="links" class="content-section">
+            <div class="section-content fade-in">
+                <h2>Links</h2>
+                <div class="links-container">
+                    <a href="https://github.com/1babybloo1" class="link-card bounce-in">
+                        <h3>GitHub</h3>
+                        <p>Check out my code repositories</p>
+                    </a>
+                    <a href="https://behance.net/jbgfx" class="link-card bounce-in">
+                        <h3>Behance</h3>
+                        <p>Explore my portfolio</p>
+                    </a>
+                    <a href="mailto:trixdesignsofficial@gmail.com" class="link-card bounce-in">
+                        <h3>Email</h3>
+                        <p>Contact for enquiries</p>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
+    <!-- End Main Content -->
 
     <script src="script.js"></script>
 </body>
@@ -140,6 +156,145 @@ body {
 
 html {
     scroll-behavior: smooth;
+}
+
+/* Loading Screen */
+.loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.loading-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loading-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.liquid-blob {
+    position: absolute;
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    background: linear-gradient(45deg, var(--secondary), #00ffff, #66d9ff);
+    filter: blur(40px);
+    opacity: 0.4;
+    animation: liquidMorph 8s ease-in-out infinite;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.blob-2 {
+    width: 350px;
+    height: 350px;
+    top: 50%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.blob-3 {
+    width: 300px;
+    height: 300px;
+    bottom: 15%;
+    left: 40%;
+    animation-delay: 4s;
+}
+
+@keyframes liquidMorph {
+    0%, 100% {
+        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+        transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    25% {
+        border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
+        transform: translate(30px, -30px) rotate(90deg) scale(1.1);
+    }
+    50% {
+        border-radius: 30% 70% 70% 30% / 50% 70% 30% 50%;
+        transform: translate(-20px, 40px) rotate(180deg) scale(0.9);
+    }
+    75% {
+        border-radius: 50% 50% 30% 70% / 70% 50% 50% 30%;
+        transform: translate(40px, 20px) rotate(270deg) scale(1.05);
+    }
+}
+
+.loading-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.loading-text {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: var(--tertiary);
+filter: drop-shadow(0 0 20px var(--secondary))
+        drop-shadow(0 0 40px var(--secondary))
+        drop-shadow(0 0 60px var(--secondary))
+        drop-shadow(0 0 80px rgba(137, 207, 240, 0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.typewriter {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    letter-spacing: 0.15em;
+}
+
+.cursor-blink {
+    font-weight: 400;
+    animation: blink 0.7s infinite;
+    opacity: 0;
+    margin-left: 5px;
+}
+
+.cursor-blink.show {
+    opacity: 1;
+}
+
+@keyframes blink {
+    0%, 49% {
+        opacity: 1;
+    }
+    50%, 100% {
+        opacity: 0;
+    }
+}
+
+/* Main Content Initially Hidden */
+.main-content {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+
+.main-content.visible {
+    opacity: 1;
 }
 
 /* Custom Cursor */
@@ -756,6 +911,29 @@ html {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .loading-text {
+        font-size: 2.5rem;
+    }
+
+    .liquid-blob {
+        filter: blur(30px);
+    }
+
+    .blob-1 {
+        width: 300px;
+        height: 300px;
+    }
+
+    .blob-2 {
+        width: 250px;
+        height: 250px;
+    }
+
+    .blob-3 {
+        width: 200px;
+        height: 200px;
+    }
+
     .glitch-title {
         font-size: 2.5rem;
     }
