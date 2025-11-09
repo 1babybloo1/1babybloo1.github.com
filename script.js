@@ -1,3 +1,42 @@
+// Loading Screen Animation
+window.addEventListener('load', () => {
+    const loadingScreen = document.querySelector('.loading-screen');
+    const mainContent = document.querySelector('.main-content');
+    const typewriterElement = document.querySelector('.typewriter');
+    const cursorBlink = document.querySelector('.cursor-blink');
+    const text = 'Babybloo';
+    let index = 0;
+
+    // Typewriter effect
+    function typeWriter() {
+        if (index < text.length) {
+            typewriterElement.textContent += text.charAt(index);
+            index++;
+            setTimeout(typeWriter, 150); // Speed of typing
+        } else {
+            // Show blinking cursor for 1 second after typing completes
+            setTimeout(() => {
+                cursorBlink.classList.add('show');
+                
+                // After 1 second, fade out loading screen
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                    mainContent.classList.add('visible');
+                    
+                    // Enable scrolling
+                    document.body.style.overflow = 'auto';
+                }, 1000);
+            }, 100);
+        }
+    }
+
+    // Disable scrolling during loading
+    document.body.style.overflow = 'hidden';
+    
+    // Start typewriter effect after a brief delay
+    setTimeout(typeWriter, 500);
+});
+
 // Custom Cursor
 const cursor = document.querySelector('.cursor');
 
