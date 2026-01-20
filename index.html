@@ -3,1117 +3,392 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <title>Flash UI | Heavy-Ink Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0a0a0a;
+            --paper: #e8e6e1;
+            --accent: #ff3e00;
+            --piston-speed: 0.4s;
+            --piston-ease: cubic-bezier(0.8, 0, 0.2, 1);
+            --border-width: 4px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: crosshair;
+        }
+
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Grain Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .press-container {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: minmax(100px, auto);
+            gap: 0;
+            border: var(--border-width) solid var(--ink);
+            background-color: var(--ink);
+            box-shadow: 20px 20px 0px rgba(0,0,0,0.1);
+        }
+
+        .cell {
+            background-color: var(--paper);
+            border: calc(var(--border-width) / 2) solid var(--ink);
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--piston-speed) var(--piston-ease), background-color 0.2s ease;
+        }
+
+        .cell:hover {
+            background-color: #fff;
+            transform: translate(-4px, -4px);
+            box-shadow: 4px 4px 0px var(--ink);
+            z-index: 10;
+        }
+
+        /* Hero Name */
+        .name-block {
+            grid-column: span 8;
+            grid-row: span 3;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .name-block h1 {
+            font-size: clamp(4rem, 10vw, 12rem);
+            line-height: 0.85;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            word-break: break-all;
+        }
+
+        /* Stats */
+        .stats-block {
+            grid-column: span 4;
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-family: 'Space Mono', monospace;
+        }
+
+        .stat-item {
+            border-bottom: 2px solid var(--ink);
+            padding: 1rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .stat-val {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        /* Clock */
+        .clock-block {
+            grid-column: span 4;
+            grid-row: span 1;
+            background-color: var(--ink);
+            color: var(--paper);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #clock {
+            font-family: 'Space Mono', monospace;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        /* Weather */
+        .weather-block {
+            grid-column: span 6;
+            grid-row: span 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .weather-input-wrap {
+            display: flex;
+            border: var(--border-width) solid var(--ink);
+        }
+
+        input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 1.2rem;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        .press-btn {
+            background: var(--ink);
+            color: var(--paper);
+            border: none;
+            padding: 0 1.5rem;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .press-btn:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .weather-display {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            transition: opacity 0.3s ease, transform 0.3s var(--piston-ease);
+        }
+
+        .temp {
+            font-size: 5rem;
+            font-weight: 900;
+        }
+
+        .city-label {
+            font-family: 'Space Mono', monospace;
+            text-transform: uppercase;
+            background: var(--ink);
+            color: var(--paper);
+            padding: 0.2rem 0.5rem;
+            display: inline-block;
+        }
+
+        #pressure-readout {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        /* Social */
+        .social-block {
+            grid-column: span 6;
+            grid-row: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            padding: 0;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--ink);
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: calc(var(--border-width) / 2) solid var(--ink);
+            transition: all var(--piston-speed) var(--piston-ease);
+        }
+
+        .social-link:hover {
+            background: var(--ink);
+            color: var(--paper);
+            font-size: 1.2rem;
+        }
+
+        /* Animations */
+        @keyframes pistonDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+
+        .reveal {
+            animation: pistonDown 0.8s var(--piston-ease) forwards;
+        }
+
+        @media (max-width: 900px) {
+            .press-container {
+                display: flex;
+                flex-direction: column;
+            }
+            .cell {
+                grid-column: span 12 !important;
+                grid-row: auto !important;
+            }
+            .name-block h1 { font-size: 5rem; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div class="loading-screen">
-        <div class="loading-background">
-            <div class="liquid-blob blob-1"></div>
-            <div class="liquid-blob blob-2"></div>
-            <div class="liquid-blob blob-3"></div>
-        </div>
-        <div class="loading-content">
-            <h1 class="loading-text">
-                <span class="typewriter"></span>
-                <span class="cursor-blink">_</span>
-            </h1>
-        </div>
-    </div>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Custom Cursor -->
-        <div class="cursor"></div>
-        
-        <!-- Neon Lights Background -->
-        <div class="neon-container">
-            <div class="neon-light"></div>
-            <div class="neon-light"></div>
-            <div class="neon-light"></div>
-            <div class="neon-light"></div>
-            <div class="neon-light"></div>
+    <main class="press-container">
+        <!-- Name -->
+        <div class="cell name-block reveal" style="animation-delay: 0.1s;">
+            <div style="font-family: 'Space Mono'; font-size: 0.8rem; margin-bottom: 1rem;">[ DESIGNER / ARTIST ]</div>
+            <h1>FLASH<br>UI_</h1>
         </div>
 
-        <!-- Side Menu with Particles -->
-        <nav class="side-menu">
-            <canvas id="particleCanvas"></canvas>
-            <div class="menu-label">MENU</div>
-            <div class="menu-content">
-                <a href="#hero" class="menu-item">About Me</a>
-                <a href="#gallery" class="menu-item">Stats</a>
-                <a href="#links" class="menu-item">Links</a>
-                <a href="#" class="menu-item" id="contact-link">Contact</a> 
+        <!-- Stats -->
+        <div class="cell stats-block reveal" style="animation-delay: 0.2s;">
+            <div class="stat-item">
+                <span>PROJECTS</span>
+                <span class="stat-val">42</span>
             </div>
-        </nav>
-
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <div class="scroll-text">Scroll to Explore</div>
-            <div class="scroll-arrow">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="stat-item">
+                <span>PRGRMS</span>
+                <span class="stat-val">4</span>
+            </div>
+            <div class="stat-item">
+                <span>EXP_YRS</span>
+                <span class="stat-val">6</span>
             </div>
         </div>
 
-        <!-- Hero Section -->
-        <section id="hero" class="hero-section">
-            <div class="glass-background"></div>
-            <div class="hero-content">
-                <h1 class="glitch-title" data-text="Welcome to My Portfolio">Welcome to My Portfolio</h1>
-                <p class="hero-subtitle">Independent Graphic Designer</p>
-            </div>
-        </section>
-
-        <!-- About Me Section -->
-        <section id="about" class="content-section">
-            <div class="section-content fade-in">
-                <h2>About Me</h2>
-                <p>For many years now I have grown to love graphic design. I started off using 3D software (mainly Blender 3D) to create rendered graphics. I have practiced and honed the skill through the assistance of YouTube, professional advice and the internet, taking inspiration from other artists on websites such as Behance and Artstation.</p>
-                <p>I now have also touched upon different mediums, such as 2D graphics and illustration, brutalism and photography. I have taken upon experimenting with new styles, methods and principles of graphic design. I mostly enjoy creating brutalism posters. i love the grungy textures, bold shapes and the distinctive style and principles used to make the images.</p>
-                <p>My journey consists of six years of experimentation, practice and cups of decaffe coffee to get to where i am now, and have enjoyed every moment, and hope to do so for a long time.</p>
-            </div>
-        </section>
-
-        <!-- Stats Counter Section -->
-        <section id="gallery" class="content-section">
-            <div class="section-content fade-in">
-                <h2>Achievements</h2>
-                <div class="stats-grid">
-                    <div class="stat-item bounce-in">
-                        <div class="stat-card">
-                            <div class="stat-number" data-target="23">0</div>
-                            <div class="stat-label">Projects Made</div>
-                        </div>
-                    </div>
-                    <div class="stat-item bounce-in">
-                        <div class="stat-card">
-                            <div class="stat-number" data-target="6">0</div>
-                            <div class="stat-label">Years Experience</div>
-                        </div>
-                    </div>
-                    <div class="stat-item bounce-in">
-                        <div class="stat-card">
-                            <div class="stat-number" data-target="2222">0</div>
-                            <div class="stat-label">Project Views</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Links Section -->
-        <section id="links" class="content-section">
-            <div class="section-content fade-in">
-                <h2>Links</h2>
-                <div class="links-container">
-                    <a href="https://github.com/1babybloo1" class="link-card bounce-in">
-                        <h3>GitHub</h3>
-                        <p>Check out my code repositories</p>
-                    </a>
-                    <a href="https://behance.net/jbgfx" class="link-card bounce-in">
-                        <h3>Behance</h3>
-                        <p>Explore my portfolio</p>
-                    </a>
-                    <a href="https://displate.com/artist/babybloo?art=690782e5c541f" class="link-card bounce-in">
-                        <h3>Displate</h3>
-                        <p>Metal Posters</p>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </div>
-    
-    <div class="contact-modal-overlay" id="contact-modal">
-        <div class="contact-form-container">
-            <button class="close-button">&times;</button>
-            <h2>Contact Me</h2>
-            <form id="contact-form" action="https://formspree.io/f/mpwkzozz" method="POST">
-                <div class="form-group">
-                    <input type="text" id="name" name="name" required>
-                    <label for="name">Name</label>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="email" name="email" required>
-                    <label for="email">Email</label>
-                </div>
-                <div class="form-group">
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                    <label for="message">Message</label>
-                </div>
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACA97m9Q3SAD0fut"></div>
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
+        <!-- Clock -->
+        <div class="cell clock-block reveal" style="animation-delay: 0.3s;">
+            <div id="clock">00:00:00</div>
         </div>
-    </div>
-    <!-- End Main Content -->
 
-    <script src="script.js"></script>
+        <!-- Weather -->
+        <div class="cell weather-block reveal" style="animation-delay: 0.4s;">
+            <div class="weather-input-wrap">
+                <input type="text" id="cityInput" placeholder="ENTER_CITY" value="BERLIN">
+                <button class="press-btn" onclick="updateWeather()">SET</button>
+            </div>
+            <div class="weather-display" id="weatherDisplay">
+                <div class="temp" id="tempDisplay">--°</div>
+                <div>
+                    <div class="city-label" id="cityLabel">LOADING...</div>
+                    <div style="font-family: 'Space Mono'; margin-top: 0.5rem; text-transform: uppercase;" id="weatherDesc">CONNECTING_API</div>
+                    <div id="pressure-readout">PRESS: 0000 MB</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Social -->
+        <div class="cell social-block reveal" style="animation-delay: 0.5s;">
+            <a href="https://github.com/1babybloo1" class="social-link">GITHUB</a>
+            <a href="https://behance.net/jbgfx" class="social-link">BEHANCE</a>
+            <a href="https://displate.com/artist/babybloo?art=690782e5c541f" class="social-link">DISPLATE</a>
+            <a href="#" class="social-link">LINKEDIN</a>
+        </div>
+    </main>
+
+    <script>
+        // 1. Digital Clock Logic
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // 2. WeatherAPI.com Logic
+        const API_KEY = '7205c5db071e4146865101151262001'; // <--- PASTE YOUR KEY HERE
+
+        async function updateWeather() {
+            const city = document.getElementById('cityInput').value.trim();
+            const label = document.getElementById('cityLabel');
+            const temp = document.getElementById('tempDisplay');
+            const desc = document.getElementById('weatherDesc');
+            const press = document.getElementById('pressure-readout');
+            const display = document.getElementById('weatherDisplay');
+
+            if (!city) return;
+
+            // Start Mechanical Piston visual feedback
+            display.style.transform = 'translateY(15px)';
+            display.style.opacity = '0.4';
+
+            try {
+                // WeatherAPI structure: key, q (query), and optional aqi
+                const response = await fetch(
+                    `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}&aqi=no`
+                );
+                const data = await response.json();
+
+                // Small delay to simulate mechanical processing
+                setTimeout(() => {
+                    if (!data.error) {
+                        label.textContent = data.location.name.toUpperCase();
+                        temp.textContent = `${Math.round(data.current.temp_c)}°`;
+                        desc.textContent = data.current.condition.text.toUpperCase();
+                        press.textContent = `PRESS: ${data.current.pressure_mb} MB`;
+                    } else {
+                        label.textContent = "ERROR";
+                        temp.textContent = "??°";
+                        desc.textContent = data.error.message.toUpperCase();
+                    }
+                    // Return piston to position
+                    display.style.transform = 'translateY(0)';
+                    display.style.opacity = '1';
+                }, 400);
+
+            } catch (error) {
+                label.textContent = "OFFLINE";
+                temp.textContent = "—°";
+                desc.textContent = "NETWORK FAILURE";
+                display.style.transform = 'translateY(0)';
+                display.style.opacity = '1';
+            }
+        }
+
+        // Allow Enter key to submit
+        document.getElementById('cityInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') updateWeather();
+        });
+
+        // Initialize weather on load
+        window.addEventListener('load', updateWeather);
+
+        // 3. Mechanical Interaction Feel
+        document.querySelectorAll('.cell').forEach(cell => {
+            cell.addEventListener('mousedown', () => {
+                cell.style.transform = 'translate(0, 0)';
+                cell.style.boxShadow = 'none';
+            });
+            cell.addEventListener('mouseup', () => {
+                cell.style.transform = 'translate(-4px, -4px)';
+                cell.style.boxShadow = '4px 4px 0px var(--ink)';
+            });
+        });
+    </script>
 </body>
-
-
-
-
-<style>
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    cursor: none;
-}
-
-:root {
-    --primary: #2a2a2a;
-    --secondary: #89CFF0;
-    --tertiary: #ffffff;
-}
-
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--primary);
-    color: var(--tertiary);
-    overflow-x: hidden;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-/* Loading Screen */
-.loading-screen {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--primary);
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.loading-screen.hidden {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-}
-
-.loading-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.liquid-blob {
-    position: absolute;
-    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-    background: linear-gradient(45deg, var(--secondary), #00ffff, #66d9ff);
-    filter: blur(40px);
-    opacity: 0.4;
-    animation: liquidMorph 8s ease-in-out infinite;
-}
-
-.blob-1 {
-    width: 400px;
-    height: 400px;
-    top: 20%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.blob-2 {
-    width: 350px;
-    height: 350px;
-    top: 50%;
-    right: 15%;
-    animation-delay: 2s;
-}
-
-.blob-3 {
-    width: 300px;
-    height: 300px;
-    bottom: 15%;
-    left: 40%;
-    animation-delay: 4s;
-}
-
-@keyframes liquidMorph {
-    0%, 100% {
-        border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-        transform: translate(0, 0) rotate(0deg) scale(1);
-    }
-    25% {
-        border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%;
-        transform: translate(30px, -30px) rotate(90deg) scale(1.1);
-    }
-    50% {
-        border-radius: 30% 70% 70% 30% / 50% 70% 30% 50%;
-        transform: translate(-20px, 40px) rotate(180deg) scale(0.9);
-    }
-    75% {
-        border-radius: 50% 50% 30% 70% / 70% 50% 50% 30%;
-        transform: translate(40px, 20px) rotate(270deg) scale(1.05);
-    }
-}
-
-.loading-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
-
-.loading-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
-    color: var(--tertiary);
-filter: drop-shadow(0 0 20px var(--secondary))
-        drop-shadow(0 0 40px var(--secondary))
-        drop-shadow(0 0 60px var(--secondary))
-        drop-shadow(0 0 80px rgba(137, 207, 240, 0.5));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.typewriter {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    letter-spacing: 0.15em;
-}
-
-.cursor-blink {
-    font-weight: 400;
-    animation: blink 0.7s infinite;
-    opacity: 0;
-    margin-left: 5px;
-}
-
-.cursor-blink.show {
-    opacity: 1;
-}
-
-@keyframes blink {
-    0%, 49% {
-        opacity: 1;
-    }
-    50%, 100% {
-        opacity: 0;
-    }
-}
-
-/* Main Content Initially Hidden */
-.main-content {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-
-.main-content.visible {
-    opacity: 1;
-}
-
-/* Custom Cursor */
-.cursor {
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--secondary);
-    border-radius: 50%;
-    position: fixed;
-    pointer-events: none;
-    z-index: 10002;
-    transition: all 0.1s ease;
-    background: rgba(137, 207, 240, 0.3);
-    box-shadow: 0 0 20px var(--secondary);
-}
-
-/* Neon Lights Background */
-.neon-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
-
-.neon-light {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    animation: float 15s infinite ease-in-out;
-    opacity: 0.4;
-}
-
-.neon-light:nth-child(1) {
-    width: 300px;
-    height: 300px;
-    background: var(--secondary);
-    top: 10%;
-    left: 10%;
-    animation-delay: 0s;
-}
-
-.neon-light:nth-child(2) {
-    width: 250px;
-    height: 250px;
-    background: #00ffff;
-    top: 60%;
-    right: 20%;
-    animation-delay: 3s;
-}
-
-.neon-light:nth-child(3) {
-    width: 200px;
-    height: 200px;
-    background: var(--secondary);
-    bottom: 10%;
-    left: 30%;
-    animation-delay: 6s;
-}
-
-.neon-light:nth-child(4) {
-    width: 350px;
-    height: 350px;
-    background: #66d9ff;
-    top: 30%;
-    right: 10%;
-    animation-delay: 9s;
-}
-
-.neon-light:nth-child(5) {
-    width: 280px;
-    height: 280px;
-    background: var(--secondary);
-    bottom: 20%;
-    right: 40%;
-    animation-delay: 12s;
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translate(0, 0) scale(1);
-    }
-    25% {
-        transform: translate(50px, 50px) scale(1.1);
-    }
-    50% {
-        transform: translate(-30px, 80px) scale(0.9);
-    }
-    75% {
-        transform: translate(40px, -40px) scale(1.05);
-    }
-}
-
-/* Side Menu with Particles */
-.side-menu {
-    position: fixed;
-    left: 0;
-    top: 0;
-    height: 100vh;
-    width: 80px;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    transition: width 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.side-menu:hover {
-    width: 300px;
-}
-
-#particleCanvas {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0.6;
-}
-
-.menu-label {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(-90deg);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 900;
-    letter-spacing: 8px;
-    color: var(--secondary);
-    text-shadow: 0 0 20px var(--secondary),
-                 0 0 40px var(--secondary),
-                 0 0 60px var(--secondary);
-    transition: opacity 0.3s ease;
-    white-space: nowrap;
-    pointer-events: none;
-}
-
-.side-menu:hover .menu-label {
-    opacity: 0;
-}
-
-.menu-content {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 30px 20px;
-    opacity: 0;
-    transition: opacity 0.4s ease 0.2s;
-    pointer-events: none;
-    width: 100%;
-}
-
-.side-menu:hover .menu-content {
-    opacity: 1;
-    pointer-events: all;
-}
-
-.menu-item {
-    display: block;
-    color: var(--tertiary);
-    text-decoration: none;
-    padding: 15px 25px;
-    margin: 15px 0;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background: rgba(137, 207, 240, 0.1);
-    border: 1px solid transparent;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    letter-spacing: 2px;
-    font-size: 0.9rem;
-}
-
-.menu-item:hover {
-    background: rgba(137, 207, 240, 0.2);
-    border-color: var(--secondary);
-    transform: translateX(10px);
-    box-shadow: 0 0 20px rgba(137, 207, 240, 0.4);
-}
-
-/* Scroll Indicator */
-.scroll-indicator {
-    position: fixed;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeInOut 3s ease-in-out infinite;
-}
-
-.scroll-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    color: var(--secondary);
-    letter-spacing: 3px;
-    margin-bottom: 15px;
-    text-shadow: 0 0 10px var(--secondary);
-}
-
-.scroll-arrow {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.scroll-arrow span {
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-bottom: 3px solid var(--secondary);
-    border-right: 3px solid var(--secondary);
-    transform: rotate(45deg);
-    animation: scrollAnimation 2s infinite;
-    box-shadow: 0 0 10px var(--secondary);
-}
-
-.scroll-arrow span:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.scroll-arrow span:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes scrollAnimation {
-    0% {
-        opacity: 0;
-        transform: rotate(45deg) translate(-10px, -10px);
-    }
-    50% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-        transform: rotate(45deg) translate(10px, 10px);
-    }
-}
-
-@keyframes fadeInOut {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0.5;
-    }
-}
-
-/* Hide scroll indicator when scrolling */
-.scroll-indicator.hidden {
-    animation: fadeOut 0.5s ease forwards;
-}
-
-@keyframes fadeOut {
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
-
-/* Hero Section */
-.hero-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.glass-background {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    height: 70%;
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px 0 rgba(137, 207, 240, 0.2);
-    animation: glassFloat 6s ease-in-out infinite;
-}
-
-@keyframes glassFloat {
-    0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-        transform: translate(-50%, -48%) scale(1.02);
-    }
-}
-
-.hero-content {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-}
-
-.glitch-title {
-    font-size: 4rem;
-    font-weight: 700;
-    color: var(--tertiary);
-    position: relative;
-    display: inline-block;
-    animation: smoothBlink 1s ease-out;
-}
-
-@keyframes smoothBlink {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    20% {
-        opacity: 0.3;
-        transform: scale(0.98);
-    }
-    40% {
-        opacity: 0;
-        transform: scale(0.96);
-    }
-    60% {
-        opacity: 0.6;
-        transform: scale(1.02);
-    }
-    80% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.glitch-title::before,
-.glitch-title::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-}
-
-.glitch-title:hover::before {
-    color: var(--secondary);
-    animation: glitch1 0.3s infinite;
-}
-
-.glitch-title:hover::after {
-    color: #00ffff;
-    animation: glitch2 0.3s infinite;
-}
-
-@keyframes glitch1 {
-    0% {
-        clip-path: inset(40% 0 61% 0);
-        transform: translate(-2px, -2px);
-        opacity: 0.8;
-    }
-    20% {
-        clip-path: inset(92% 0 1% 0);
-        transform: translate(2px, 2px);
-    }
-    40% {
-        clip-path: inset(43% 0 1% 0);
-        transform: translate(-2px, 2px);
-    }
-    60% {
-        clip-path: inset(25% 0 58% 0);
-        transform: translate(2px, -2px);
-    }
-    80% {
-        clip-path: inset(54% 0 7% 0);
-        transform: translate(-2px, -2px);
-    }
-    100% {
-        clip-path: inset(58% 0 43% 0);
-        transform: translate(2px, 2px);
-    }
-}
-
-@keyframes glitch2 {
-    0% {
-        clip-path: inset(65% 0 15% 0);
-        transform: translate(2px, 2px);
-        opacity: 0.8;
-    }
-    20% {
-        clip-path: inset(22% 0 65% 0);
-        transform: translate(-2px, -2px);
-    }
-    40% {
-        clip-path: inset(85% 0 5% 0);
-        transform: translate(2px, -2px);
-    }
-    60% {
-        clip-path: inset(5% 0 80% 0);
-        transform: translate(-2px, 2px);
-    }
-    80% {
-        clip-path: inset(40% 0 43% 0);
-        transform: translate(2px, 2px);
-    }
-    100% {
-        clip-path: inset(12% 0 78% 0);
-        transform: translate(-2px, -2px);
-    }
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    margin-top: 20px;
-    color: var(--secondary);
-    opacity: 0;
-    animation: fadeInUp 1s ease-out 0.5s forwards;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Content Sections */
-.content-section {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 80px 20px;
-    position: relative;
-}
-
-.section-content {
-    max-width: 1200px;
-    width: 100%;
-    padding: 60px;
-    background: rgba(42, 42, 42, 0.6);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    border: 1px solid rgba(137, 207, 240, 0.2);
-}
-
-.section-content h2 {
-    font-size: 3rem;
-    margin-bottom: 30px;
-    color: var(--secondary);
-}
-
-.section-content p {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    margin-bottom: 20px;
-}
-
-/* Stats Grid */
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 40px;
-    margin-top: 40px;
-}
-
-.stat-item {
-    opacity: 0;
-    transform: translateY(50px);
-}
-
-.stat-card {
-    background: rgba(137, 207, 240, 0.1);
-    padding: 50px 40px;
-    border-radius: 15px;
-    border: 1px solid rgba(137, 207, 240, 0.3);
-    transition: all 0.3s ease;
-    height: 100%;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.stat-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 40px rgba(137, 207, 240, 0.3);
-    border-color: var(--secondary);
-    background: rgba(137, 207, 240, 0.15);
-}
-
-.stat-icon {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    filter: drop-shadow(0 0 10px var(--secondary));
-}
-
-.stat-number {
-    font-size: 4rem;
-    font-weight: 900;
-    color: var(--secondary);
-    margin-bottom: 15px;
-    font-family: 'Orbitron', sans-serif;
-    text-shadow: 0 0 20px var(--secondary);
-}
-
-.stat-label {
-    font-size: 1.2rem;
-    color: var(--tertiary);
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.stat-number.counting {
-    animation: pulse 0.5s ease;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
-}
-
-/* Links Container */
-.links-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 30px;
-    margin-top: 40px;
-}
-
-.link-card {
-    background: rgba(137, 207, 240, 0.1);
-    padding: 40px;
-    border-radius: 15px;
-    border: 1px solid rgba(137, 207, 240, 0.3);
-    text-decoration: none;
-    color: var(--tertiary);
-    transition: all 0.3s ease;
-    display: block;
-    opacity: 0;
-    transform: translateY(50px);
-}
-
-.link-card:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 10px 40px rgba(137, 207, 240, 0.4);
-    border-color: var(--secondary);
-    background: rgba(137, 207, 240, 0.2);
-}
-
-.link-card h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-    color: var(--secondary);
-}
-
-.link-card p {
-    font-size: 1rem;
-    margin: 0;
-}
-
-/* Fade In Animation */
-.fade-in {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: all 0.8s ease;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Bounce In Animation */
-.bounce-in {
-    animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-}
-
-@keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: scale(0.3) translateY(50px);
-    }
-    50% {
-        opacity: 1;
-        transform: scale(1.05);
-    }
-    70% {
-        transform: scale(0.9);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .loading-text {
-        font-size: 2.5rem;
-    }
-
-    .liquid-blob {
-        filter: blur(30px);
-    }
-
-    .blob-1 {
-        width: 300px;
-        height: 300px;
-    }
-
-    .blob-2 {
-        width: 250px;
-        height: 250px;
-    }
-
-    .blob-3 {
-        width: 200px;
-        height: 200px;
-    }
-
-    .glitch-title {
-        font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.2rem;
-    }
-    
-    .section-content {
-        padding: 40px 20px;
-    }
-    
-    .section-content h2 {
-        font-size: 2rem;
-    }
-    
-    .stats-grid,
-    .links-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .side-menu {
-        width: 60px;
-    }
-    
-    .side-menu:hover {
-        width: 250px;
-    }
-    
-    .menu-label {
-        font-size: 1rem;
-        letter-spacing: 4px;
-    }
-}
-/* ======================================== */
-/*          CONTACT FORM STYLES             */
-/* ======================================== */
-
-.contact-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    z-index: 10001;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.5s ease, visibility 0.5s ease;
-}
-
-.contact-modal-overlay.visible {
-    opacity: 1;
-    visibility: visible;
-}
-
-.contact-form-container {
-    position: relative;
-    background: rgba(42, 42, 42, 0.6);
-    backdrop-filter: blur(20px);
-    padding: 40px;
-    border-radius: 20px;
-    border: 1px solid rgba(137, 207, 240, 0.3);
-    box-shadow: 0 8px 32px 0 rgba(137, 207, 240, 0.2);
-    width: 90%;
-    max-width: 500px;
-    transform: scale(0.9);
-    transition: transform 0.5s ease;
-}
-
-.contact-modal-overlay.visible .contact-form-container {
-    transform: scale(1);
-}
-
-.close-button {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: var(--tertiary);
-    font-size: 2rem;
-    font-weight: bold;
-    /* Make sure cursor style is correct */
-    cursor: none !important; 
-}
-
-.contact-form-container h2 {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--secondary);
-    text-align: center;
-    margin-bottom: 30px;
-    font-size: 2rem;
-}
-
-.form-group {
-    position: relative;
-    margin-bottom: 35px;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid rgba(137, 207, 240, 0.5);
-    color: var(--tertiary);
-    font-size: 1.1rem;
-    padding: 10px 0;
-    outline: none;
-    position: relative;
-    z-index: 1;
-}
-
-.form-group label {
-    position: absolute;
-    top: 10px;
-    left: 0;
-    color: rgba(255, 255, 255, 0.7);
-    transition: all 0.3s ease;
-    pointer-events: none;
-}
-
-.form-group input:focus + label,
-.form-group input:valid + label,
-.form-group textarea:focus + label,
-.form-group textarea:valid + label {
-    top: -20px;
-    font-size: 0.9rem;
-    color: var(--secondary);
-}
-
-.submit-button {
-    display: block;
-    width: 100%;
-    padding: 15px;
-    background: rgba(137, 207, 240, 0.2);
-    border: 1px solid var(--secondary);
-    color: var(--tertiary);
-    border-radius: 8px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    /* Make sure cursor style is correct */
-    cursor: none !important; 
-}
-
-.submit-button:hover {
-    background: var(--secondary);
-    color: var(--primary);
-    box-shadow: 0 0 20px var(--secondary);
-}
-</style>
 </html>
